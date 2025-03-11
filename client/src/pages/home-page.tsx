@@ -1,4 +1,4 @@
-import Sidebar from "@/components/layout/sidebar";
+import Footer from "@/components/layout/footer";
 import SpendingChart from "@/components/dashboard/spending-chart";
 import AIChat from "@/components/chat/ai-chat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,23 +20,20 @@ export default function HomePage() {
 
   if (expensesLoading || budgetsLoading) {
     return (
-      <div className="flex min-h-screen">
-        <Sidebar />
-        <div className="flex-1 p-8">
-          <div className="flex items-center justify-center h-full">
-            <Loader2 className="h-8 w-8 animate-spin" />
-          </div>
+      <div className="min-h-screen pb-16">
+        <div className="flex items-center justify-center h-full">
+          <Loader2 className="h-8 w-8 animate-spin" />
         </div>
+        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex-1 p-8">
+    <div className="min-h-screen pb-16">
+      <div className="container max-w-7xl mx-auto p-8">
         <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-        
+
         <div className="grid gap-4 md:grid-cols-3 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -82,6 +79,7 @@ export default function HomePage() {
           <AIChat />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

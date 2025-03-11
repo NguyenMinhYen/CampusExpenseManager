@@ -1,4 +1,4 @@
-import Sidebar from "@/components/layout/sidebar";
+import Footer from "@/components/layout/footer";
 import BudgetForm from "@/components/budgets/budget-form";
 import { useQuery } from "@tanstack/react-query";
 import { Budget } from "@shared/schema";
@@ -36,11 +36,10 @@ export default function BudgetPage() {
   });
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex-1 p-8">
+    <div className="min-h-screen pb-16">
+      <div className="container max-w-7xl mx-auto p-8">
         <h1 className="text-3xl font-bold mb-8">Budget Management</h1>
-        
+
         <div className="grid gap-8 md:grid-cols-2">
           <div>
             <Card>
@@ -97,6 +96,7 @@ export default function BudgetPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
