@@ -6,7 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Send } from "lucide-react";
+import { Loader2, Send, User, Bot } from "lucide-react";
 
 interface Message {
   role: "user" | "assistant";
@@ -24,9 +24,16 @@ export default function AIChat() {
       return res.json();
     },
     onSuccess: (data) => {
+      // Format the response text with bullet points and sections
+      const formattedResponse = data.response
+        .split('\n')
+        .map((line: string) => line.trim())
+        .filter((line: string) => line.length > 0)
+        .join('\n\n');
+
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: data.response },
+        { role: "assistant", content: formattedResponse },
       ]);
       setInput("");
     },
@@ -50,7 +57,10 @@ export default function AIChat() {
   return (
     <Card className="h-[500px] flex flex-col">
       <CardHeader>
-        <CardTitle>Financial Assistant</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Bot className="h-5 w-5" />
+          Financial Assistant
+        </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col">
         <ScrollArea className="flex-1 pr-4">
@@ -63,20 +73,46 @@ export default function AIChat() {
                 }`}
               >
                 <div
-                  className={`rounded-lg px-4 py-2 max-w-[80%] ${
-                    message.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
+                  className={`flex items-start gap-2 max-w-[80%] ${
+                    message.role === "user" ? "flex-row-reverse" : "flex-row"
                   }`}
                 >
-                  {message.content}
+                  <div
+                    className={`shrink-0 rounded-full p-2 ${
+                      message.role === "user" 
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted"
+                    }`}
+                  >
+                    {message.role === "user" ? (
+                      <User className="h-4 w-4" />
+                    ) : (
+                      <Bot className="h-4 w-4" />
+                    )}
+                  </div>
+                  <div
+                    className={`rounded-lg px-4 py-2 ${
+                      message.role === "user"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted"
+                    }`}
+                  >
+                    <div className="whitespace-pre-wrap">
+                      {message.content}
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
             {chatMutation.isPending && (
               <div className="flex justify-start">
-                <div className="rounded-lg px-4 py-2 bg-muted">
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                <div className="flex items-start gap-2">
+                  <div className="shrink-0 rounded-full p-2 bg-muted">
+                    <Bot className="h-4 w-4" />
+                  </div>
+                  <div className="rounded-lg px-4 py-2 bg-muted">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  </div>
                 </div>
               </div>
             )}
@@ -86,7 +122,7 @@ export default function AIChat() {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about your finances..."
+            placeholder="Hỏi về tình hình tài chính của bạn..."
             disabled={chatMutation.isPending}
           />
           <Button type="submit" disabled={chatMutation.isPending}>
