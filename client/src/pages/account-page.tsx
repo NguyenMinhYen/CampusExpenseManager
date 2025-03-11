@@ -1,4 +1,4 @@
-import Sidebar from "@/components/layout/sidebar";
+import Footer from "@/components/layout/footer";
 import { useAuth } from "@/hooks/use-auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -58,9 +58,8 @@ export default function AccountPage() {
   });
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex-1 p-8">
+    <div className="min-h-screen pb-16">
+      <div className="container max-w-7xl mx-auto p-8">
         <h1 className="text-3xl font-bold mb-8">Account Settings</h1>
 
         <div className="max-w-2xl">
@@ -141,6 +140,7 @@ export default function AccountPage() {
           </Card>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

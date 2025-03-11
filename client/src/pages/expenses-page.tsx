@@ -1,4 +1,4 @@
-import Sidebar from "@/components/layout/sidebar";
+import Footer from "@/components/layout/footer";
 import ExpenseForm from "@/components/expenses/expense-form";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,9 +15,8 @@ export default function ExpensesPage() {
     .slice(0, 5);
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex-1 p-8">
+    <div className="min-h-screen pb-16">
+      <div className="container max-w-7xl mx-auto p-8">
         <h1 className="text-3xl font-bold mb-8">Add Expense</h1>
 
         <div className="grid gap-8 md:grid-cols-2">
@@ -71,6 +70,7 @@ export default function ExpensesPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
