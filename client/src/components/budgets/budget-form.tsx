@@ -34,7 +34,10 @@ export default function BudgetForm() {
 
   const createBudget = useMutation({
     mutationFn: async (data: any) => {
-      const res = await apiRequest("POST", "/api/budgets", data);
+      const res = await apiRequest("POST", "/api/budgets", {
+        ...data,
+        amount: parseFloat(data.amount), // Ensure amount is sent as a number
+      });
       return res.json();
     },
     onSuccess: () => {

@@ -29,13 +29,16 @@ export default function ExpenseForm() {
       amount: 0,
       category: "",
       description: "",
-      date: new Date().toISOString(),
+      date: new Date().toISOString().split('T')[0], // Format as YYYY-MM-DD
     },
   });
 
   const createExpense = useMutation({
     mutationFn: async (data: any) => {
-      const res = await apiRequest("POST", "/api/expenses", data);
+      const res = await apiRequest("POST", "/api/expenses", {
+        ...data,
+        amount: parseFloat(data.amount), // Ensure amount is sent as a number
+      });
       return res.json();
     },
     onSuccess: () => {
@@ -131,9 +134,8 @@ export default function ExpenseForm() {
               <FormLabel>Date</FormLabel>
               <FormControl>
                 <Input
-                  type="datetime-local"
+                  type="date"
                   {...field}
-                  value={field.value.split(".")[0]}
                 />
               </FormControl>
               <FormMessage />
