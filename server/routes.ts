@@ -23,6 +23,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.status(201).json(budget);
   });
 
+  app.delete("/api/budgets/:id", async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: "Invalid ID" });
+
+    // Verify ownership before deletion
+    const budgets = await storage.getBudgets(req.user.id);
+    const budget = budgets.find(b => b.id === id);
+    if (!budget) return res.status(404).json({ error: "Budget not found" });
+    if (budget.userId !== req.user.id) return res.status(403).json({ error: "Unauthorized" });
+
+    await storage.deleteBudget(id);
+    res.sendStatus(200);
+  });
+
   // Expense routes
   app.get("/api/expenses", async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
